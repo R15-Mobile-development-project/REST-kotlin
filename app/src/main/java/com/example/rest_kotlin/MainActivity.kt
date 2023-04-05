@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import com.google.gson.Gson
 import okhttp3.*
 import java.io.IOException
 
@@ -35,10 +36,9 @@ class MainActivity : AppCompatActivity() {
 
                 override fun onResponse(call: Call, response: Response) {
                     // Handle request success
-                    val responseData =
-                        response.body?.string()?.replace("[\"", "")?.replace("\"]", "")
+                    val word = Gson().fromJson(response.body?.string(), Array<String>::class.java).firstOrNull()
                     runOnUiThread {
-                        textView.text = responseData
+                        textView.text = word
                     }
                 }
             })
